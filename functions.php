@@ -23,12 +23,12 @@ function collection_custom_filter_loop_shortcode() {
             gap: 50px;
         }
 		.collection-item img {
-			height: 800px;
+			height: 450px;
 			width: 100%;
 			object-fit: cover;
 		}
 		.accordion-content label:first-child {
-			padding-top: 15px !important;
+			padding-top: 7px !important;
 		}
         details.accordion summary {
             cursor: pointer;
@@ -53,13 +53,6 @@ function collection_custom_filter_loop_shortcode() {
         .selected-items {
             font-size: 0px;
         }
-		.accordion-content label {
-			display: flex;
-    		align-items: center;
-    		gap: 8px;
-			margin: 0;
-			cursor: pointer;
-		}
 		.accordion-title {
 			font-family: Vulf Sans, sans-serif;
 			font-weight: 300;
@@ -69,9 +62,9 @@ function collection_custom_filter_loop_shortcode() {
 			text-transform: uppercase;
 		}
 		.accordion-content label {
-			font-size: 34px;
+			font-size: 30px;
 			line-height: 1.3em;
-			font-family: Romie, serif;
+			font-family: Vulf Sans, sans-serif;
 			font-weight: 500;
 			letter-spacing: .02em;
 			color: #000 !important;
@@ -81,14 +74,14 @@ function collection_custom_filter_loop_shortcode() {
             transition: transform 0.5s ease, background-color 0.3s ease;
 		}
 		.filter-count {
-			border-radius: 50%;
+			/* border-radius: 50%;
 			border: 1px solid #000;
 			width: 34px;
 			display: table;
 			text-align: center;
 			height: 34px;
-			line-height: 1.2em;
-			font-size: 26px;
+			line-height: 1.2em; */
+			font-size: 16px;
 		}
 		.x-button {
 			width: 38px;
@@ -114,7 +107,61 @@ function collection_custom_filter_loop_shortcode() {
 		  pointer-events: auto;
 		}
 		.accordion-content label input {
-			display: none !important;
+			/* display: none !important; */
+		}
+		
+		.accordion-content label input[type="checkbox"] {
+		  margin-left: auto;
+		  margin: 0;
+		}	
+		/* Modern fallback if you can't add a wrapper/class */
+		.accordion-content label:has(> input[type="checkbox"]) { display:flex; width:100%; align-items:center; gap:.5rem; }
+		.accordion-content label:has(> input[type="checkbox"]) > input[type="checkbox"] { margin-left:auto; }
+
+
+		/* === Custom minimal checkbox === */
+		label > input[type="checkbox"]{
+		  appearance: none;
+		  -webkit-appearance: none;
+		  inline-size: 1.1rem;   /* size */
+		  block-size: 1.1rem;
+		  border: 1.5px solid rgba(0,0,0,.6); /* subtle outline like your mock */
+		  border-radius: 2px;
+		  background: transparent;
+		  display: grid;         /* centers the pseudo checkmark */
+		  place-content: center;
+		  cursor: pointer;
+		  flex: 0 0 auto;        /* don't stretch */
+		  margin: 0 0 0 auto;    /* normalize + right align */
+		}
+
+		/* hover/focus polish */
+		label > input[type="checkbox"]:hover {
+		  border-color: rgba(0,0,0,.85);
+		}
+		label > input[type="checkbox"]:focus-visible {
+		  outline: 2px solid #000;
+		  outline-offset: 2px;
+		}
+
+		/* the checkmark */
+		label > input[type="checkbox"]::after{
+		  content: "";
+		  width: .55rem;
+		  height: .32rem;
+		  border: .15rem solid #000;
+		  border-top: 0;
+		  border-right: 0;
+		  transform: rotate(-45deg) scale(0);
+		  transition: transform .15s ease-in-out;
+		}
+		label > input[type="checkbox"]:checked::after{
+		  transform: rotate(-45deg) scale(1);
+		}
+		/* disabled state (optional) */
+		label > input[type="checkbox"]:disabled{
+		  opacity: .5;
+		  cursor: not-allowed;
 		}
 		.accordion-content label.selected .x-button svg {
 			width: 12px;
@@ -160,7 +207,7 @@ function collection_custom_filter_loop_shortcode() {
 		details.accordion,
 		.range-fields .acf-item-wrapper {
 			margin-bottom: 15px;
-			padding-top: 27px;
+			padding-top: 0px;
 			padding-bottom: 27px;
 			border-bottom: 1px dashed;
 		}
@@ -199,9 +246,47 @@ function collection_custom_filter_loop_shortcode() {
 		}
 		.collection-properties {
 			padding: 8px 0;
-			border-bottom: 1px dashed;
 			display: flex;
 			justify-content: space-between;
+		}
+		.collection-properties:not(.no-line) {
+			border-bottom: 1px dashed;
+		}
+		.double-buttons {
+			gap: 10px;
+		}
+		.double-buttons a:first-child {
+			width: 50%;
+			border: 1px solid #000;
+			text-align: center;
+			padding: 8px;
+			font-size: 18px;
+			color: #000 !important;
+			font-family: Romie, serif;
+			font-weight: 400 !important;
+			letter-spacing: .02em;
+			text-transform: uppercase;
+		}
+		.double-buttons a:first-child:hover {
+			color: #fff !important;
+			background-color: #000000;
+		}
+		.double-buttons a:last-child {
+			width: 50%;
+			border: 1px solid #000;
+			text-align: center;
+			padding: 8px;
+			font-size: 18px;
+			color: #fff !important;
+			background-color: #000000;
+			font-family: Romie, serif;
+			font-weight: 400 !important;
+			letter-spacing: .02em;
+			text-transform: uppercase;
+		}
+		.double-buttons a:last-child:hover {
+			color: #000 !important;
+			background-color: transparent;
 		}
 		.collection-properties span {
 			flex: 1 0 50%;
@@ -209,29 +294,54 @@ function collection_custom_filter_loop_shortcode() {
 			text-transform: uppercase;
 		}
 		#load-more {
-			padding: 10px 20px;
-			font-family: Vulf Sans, sans-serif;
+			padding: 8px 15px;
+			font-family: Romie, serif;
 			font-weight: 300;
 			line-height: 130%;
 			letter-spacing: .05em;
-			font-size: 20px;
-			border: 1px dashed #000;
+			font-size: 18px;
+			border: 1px solid #000;
 			color: #000;
 			text-transform: uppercase;
 			background-color: transparent;
+			border-radius: 0
 		}
 		#load-more:hover {
 			background-color: transparent;
 		}
+		#sort_by {
+			border: 1px solid #00000070 !important;
+			border-radius: 0;
+			padding-left: 8px;
+			padding-right: 5px;
+			background-color: transparent;
+			text-transform: uppercase;
+		}
+		.custom-select-wrapper select {
+		  appearance: none;
+		  -webkit-appearance: none;
+		  -moz-appearance: none;
+		  background-color: #fff;
+		  background-image: url('/wp-content/uploads/2025/05/dropdown.svg');
+		  background-repeat: no-repeat;
+		  background-position: right 12px center;
+		  background-size: 16px;
+		}
+
+		.custom-select-wrapper select:focus {
+		  border-color: #00000070;
+		  outline: none;
+		}
+		.sort-toggle .details,
 		h3.filter-title {
-			font-size: 20px;
+			font-size: 18px;
 			font-weight: 300;
-			font-family: "Vulf Mono Italic", Sans-serif;
-    		font-style: italic;
+			font-family: Vulf Sans, sans-serif;
     		color: #000000;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			margin-bottom: 7px;
 		}
 		.term-selected .selected-items {
 			font-size: 0;
@@ -291,7 +401,7 @@ function collection_custom_filter_loop_shortcode() {
 		
 		@media screen and (min-width: 769px) {
 			.collection-filter {
-				position: sticky;
+/* 				position: sticky; */
 				top: 50px;
 				align-self: flex-start;
 				height: fit-content;
@@ -300,16 +410,40 @@ function collection_custom_filter_loop_shortcode() {
 		}
     </style>
 
-    <div class="collection-wrapper">
-        <div class="collection-filter">
-            <form id="collection-filter-form">
+<div class="collection-wrapper">
+    <div class="collection-filter">
+        <form id="collection-filter-form">
 			<h3 class="filter-title">
-				<span>Filters</span>
 				<div class="clear-wrapper">
 					<button type="button" class="clear-all">Clear All</button>
 				</div>
 			</h3>
+				
+			<!-- ✅ Sort Dropdown goes here -->
+			<div class="sort-ui-wrapper" style="margin-bottom: 40px;">
+				<div class="select-none custom-select-wrapper">
+					<div class="sort-toggle">
+					  <span class="details uppercase">Sort by</span>
+					</div>
+					<select id="sort_by" name="sort_by">
+						<option value="recommended">Recommended</option>
+						<option value="price_low_high">Price LOW-HIGH</option>
+						<option value="price_high_low">Price HIGH-LOW</option>
+						<option value="guests_low_high">Guests LOW-HIGH</option>
+						<option value="guests_high_low">Guests HIGH-LOW</option>
+						<option value="bedroom_low_high">Bedroom LOW-HIGH</option>
+						<option value="bedroom_high_low">Bedroom HIGH-LOW</option>
+					</select>
 
+					<!-- Hidden field to store the selected sort value 
+					<input type="hidden" id="sort_by" name="sort_by" value="recommended">-->
+				</div>
+			</div>				
+				
+			<h3 class="filter-title">
+				<span>Filters</span>
+			</h3>
+				
                 <?php foreach ([
                     'destination' => 'Destinations',
                     'collection-type' => 'Types'
@@ -325,9 +459,9 @@ function collection_custom_filter_loop_shortcode() {
                     <div class="accordion-content">
                         <?php foreach ($terms as $term): ?>
                             <label>
-								<span class="x-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" class="h-[10rem] w-auto"><path fill="currentColor" d="M6.632.464h.84V.62c-.768.912-2.136 2.592-2.976 3.612.9 1.056 2.436 2.952 3.06 3.612V8h-.9c-.9-1.272-1.764-2.4-2.652-3.42C3.224 5.516 1.94 7.076 1.28 8H.44v-.12c.744-.9 2.22-2.628 3.048-3.696C2.684 3.128 1.292 1.448.584.62V.464h.852c.828 1.164 1.728 2.388 2.58 3.432.636-.732 1.86-2.328 2.616-3.432"></path></svg></span>
-                                <input type="checkbox" name="<?php echo $slug; ?>[]" value="<?php echo esc_attr($term->slug); ?>">
+							<!-- <span class="x-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" class="h-[10rem] w-auto"><path fill="currentColor" d="M6.632.464h.84V.62c-.768.912-2.136 2.592-2.976 3.612.9 1.056 2.436 2.952 3.06 3.612V8h-.9c-.9-1.272-1.764-2.4-2.652-3.42C3.224 5.516 1.94 7.076 1.28 8H.44v-.12c.744-.9 2.22-2.628 3.048-3.696C2.684 3.128 1.292 1.448.584.62V.464h.852c.828 1.164 1.728 2.388 2.58 3.432.636-.732 1.86-2.328 2.616-3.432"></path></svg></span> -->
                                 <?php echo esc_html($term->name); ?> <span class="filter-count"><?php echo $term->count; ?></span>
+								<input type="checkbox" name="<?php echo $slug; ?>[]" value="<?php echo esc_attr($term->slug); ?>">
                             </label>
                         <?php endforeach; ?>
                     </div>
@@ -348,45 +482,10 @@ function collection_custom_filter_loop_shortcode() {
                     <?php endforeach; ?>
                 </div>
 				
-<!-- KEEP ONLY THIS (inside the form): -->
-<input type="hidden" id="sort_by" name="sort_by" value="recommended">
-
-            </form>
-        </div>
+   </form>
+</div>
         <div class="collection-results">
-			
-			<!-- ✅ Sort Dropdown goes here --
-			<div class="sort-ui-wrapper" style="margin-bottom: 40px;">
-				<div class="select-none">
-					<button class="sort-toggle">
-						<span class="flex">
-							<p class="details uppercase">SORT BY: Recommended</p>
-						</span>
-						<span class="pt-[7rem]">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 6.5" class="h-[6rem] w-auto transition-transform duration-[750ms] rotate-180">
-								<path fill="currentColor" d="M13 .8c-.2 0-4.2.6-6.1 5.7l-.4-.1-.4.1C4.2 1.4.2.8 0 .8L.1 0c.2 0 4.2.6 6.4 5.2C8.7.6 12.7 0 12.9 0z"></path>
-							</svg>
-						</span>
-					</button>
-
-					<!-- Sort Menu --
-<ul class="select-menu">
-	<li><button type="button" data-sort="recommended">Recommended</button></li>
-	<li><button type="button" data-sort="price_low_high">Price LOW-HIGH</button></li>
-	<li><button type="button" data-sort="price_high_low">Price HIGH-LOW</button></li>
-	<li><button type="button" data-sort="guests_low_high">Guests LOW-HIGH</button></li>
-	<li><button type="button" data-sort="guests_high_low">Guests HIGH-LOW</button></li>
-	<li><button type="button" data-sort="bedroom_low_high">Bedroom LOW-HIGH</button></li>
-	<li><button type="button" data-sort="bedroom_high_low">Bedroom HIGH-LOW</button></li>
-</ul>
-
-
-				</div>
-			</div>
--->
-			
             <div id="collection-results" class="collection-results-grid"></div>
-			
 			<div style="margin-top: 80px; text-align: center;">
 				<button id="load-more" style="padding: 10px 20px; display: none;">Load More</button>
 			</div>
@@ -394,10 +493,35 @@ function collection_custom_filter_loop_shortcode() {
     </div>
 
 
-    <script>
+<script>
     jQuery(function($){
 		let page = 1;
-	   	function fetchCollections(reset = false, doClearAll = false) {
+// 	   	function fetchCollections(reset = false, doClearAll = false) {
+// 			const data = $('#collection-filter-form').serializeArray();
+// 			data.push({ name: 'action', value: 'filter_collections_ajax' });
+// 			data.push({ name: 'page', value: page });
+
+// 			// Add sort_by value
+// 			const sortVal = $('#sort_by').val();
+// 			if (sortVal) {
+// 				data.push({ name: 'sort_by', value: sortVal });
+// 			}
+
+// 			if (doClearAll) {
+// 				data.push({ name: 'clear_all', value: '1' });
+// 			}
+
+// 			$.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response){
+// 				if (reset) $('#collection-results').html(response);
+// 				else $('#collection-results').append(response);
+
+// 				const maxPages = parseInt($('#collection-pagination').data('max-pages')) || 1;
+// 				$('#load-more').toggle(page < maxPages);
+// 			});
+// 		}
+
+		// added promise to check loading feature
+		function fetchCollections(reset = false, doClearAll = false) {
 			const data = $('#collection-filter-form').serializeArray();
 			data.push({ name: 'action', value: 'filter_collections_ajax' });
 			data.push({ name: 'page', value: page });
@@ -412,15 +536,20 @@ function collection_custom_filter_loop_shortcode() {
 				data.push({ name: 'clear_all', value: '1' });
 			}
 
-			$.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response){
-				if (reset) $('#collection-results').html(response);
-				else $('#collection-results').append(response);
+			// Return the AJAX promise so we can chain .then()
+			return $.post('<?php echo admin_url('admin-ajax.php'); ?>', data).done(function(response) {
+				if (reset) {
+					$('#collection-results').html(response);
+				} else {
+					$('#collection-results').append(response);
+				}
 
 				const maxPages = parseInt($('#collection-pagination').data('max-pages')) || 1;
 				$('#load-more').toggle(page < maxPages);
 			});
 		}
 
+		
 
 			$('#collection-filter-form').on('change', 'input, select', function() {
 				page = 1;
@@ -435,11 +564,27 @@ function collection_custom_filter_loop_shortcode() {
 				input.val(val).trigger('change');
 			});
 
-			$('#load-more').on('click', function() {
-				page++;
-				fetchCollections();
-			});
+// 			$('#load-more').on('click', function() {
+//  				page++;
+//  				fetchCollections();
+// 			});
 
+			// Loading while pormise running
+			$('#load-more').on('click', function () {
+				const $btn = $(this);
+				const originalText = $btn.text();
+
+				$btn.prop('disabled', true).text('Loading...');
+
+				page++;
+
+				// Use .then() to revert text AFTER loading
+				fetchCollections().then(() => {
+					$btn.prop('disabled', false).text(originalText);
+				});
+			});
+		
+		
 			$('.clear-all').on('click', function() {
 				$('#collection-filter-form input[type="checkbox"]').prop('checked', false).closest('label').removeClass('selected');
 				$('#collection-filter-form input[type="number"]').val('');
@@ -571,60 +716,45 @@ function collection_custom_filter_loop_shortcode() {
 			jQuery('#collection-filter-form').trigger('change');
 		});
 
-		// sort by
-		jQuery(document).on('click', '.select-menu button', function (e) {
-			e.preventDefault();
+// Sort By Dropdown Logic
+jQuery(function($) {
+	let page = 1;
 
-			const $btn = jQuery(this);
-			const sortText = $btn.text().trim();
-			const sortValue = sortText.toLowerCase().replace(/[^a-z]+/g, '_');
+	// Toggle the custom sort dropdown (if using custom UI)
+	$(document).on('click', '.sort-toggle', function(e) {
+		e.preventDefault();
+		$('.select-menu').slideToggle(200);
+	});
 
-			// Update the visible label
-			jQuery('.select-none .details.uppercase').text('SORT BY: ' + sortText);
+	// If using a native <select> dropdown instead
+	$(document).on('change', '#sort_by', function () {
+		const sortValue = $(this).val();
+		const sortLabel = $(this).find('option:selected').text().trim();
 
-			// Update hidden input
-			jQuery('#sort_by').val(sortValue);
+		// Update UI display (optional, based on your design)
+		$('.sort-toggle .details.uppercase').text('Sort by: ' + sortLabel);
 
-			// Close dropdown menu
-			jQuery('.select-menu').fadeOut(150);
+		// Fetch with new sort
+		page = 1;
+		fetchCollections(true);
+	});
 
-			// Reset page and fetch sorted results
-			page = 1;
-			fetchCollections(true); // this uses your existing AJAX fetch
-		});
+	// Also handle custom <ul><li><button> dropdown clicks (if used)
+	$(document).on('click', '.select-menu button', function (e) {
+		e.preventDefault();
 
+		const sortValue = $(this).data('sort');
+		const sortLabel = $(this).text().trim();
 
-// Toggle dropdown
-$(document).on('click', '.sort-toggle', function(e) {
-	e.preventDefault();
-	$('.select-menu').slideToggle(200);
+		// Set hidden field or <select> value (use .trigger('change') to auto-submit)
+		$('#sort_by').val(sortValue).trigger('change');
+
+		// Optional: close dropdown UI
+		$('.select-menu').slideUp(200);
+	});
 });
 
-// Sort option click
-$(document).on('click', '.select-menu button', function(e) {
-	e.preventDefault();
-	const sortValue = $(this).data('sort'); // e.g., 'price_low_high'
-	const sortLabel = $(this).text().trim();
-
-	// Update input inside form
-	$('#collection-filter-form #sort_by').val(sortValue);
-
-	// Update UI
-	$('.select-none .details.uppercase').text('SORT BY: ' + sortLabel);
-
-	// Close menu
-	$('.select-menu').slideUp(200);
-
-	// Trigger reload
-	page = 1;
-	fetchCollections(true);
-});
-
-
-
-
-		
-    </script>
+</script>
 
     <?php
     return ob_get_clean();
@@ -634,6 +764,7 @@ add_shortcode('collection_custom_loop', 'collection_custom_filter_loop_shortcode
 
 add_action('wp_ajax_filter_collections_ajax', 'filter_collections_ajax');
 add_action('wp_ajax_nopriv_filter_collections_ajax', 'filter_collections_ajax');
+
 function filter_collections_ajax() {
     $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
     $do_clear_all = isset($_POST['clear_all']) && $_POST['clear_all'] === '1';
@@ -641,7 +772,7 @@ function filter_collections_ajax() {
     $args = [
         'post_type'      => 'collection',
         'post_status'    => 'publish',
-        'posts_per_page' => 8,
+        'posts_per_page' => 6,
         'paged'          => $paged,
     ];
 
@@ -689,40 +820,57 @@ function filter_collections_ajax() {
 	if (!empty($_POST['sort_by'])) {
 		switch ($_POST['sort_by']) {
 			case 'price_low_high':
-				$args['meta_key'] = 'price';
+				$args['meta_key'] = 'cprice';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'ASC';
+				$args['meta_query'][] = [
+					'key'     => 'cprice',
+					'value'   => '', // exclude empty values
+					'compare' => '!=',
+					'type'    => 'NUMERIC',
+				];
 				break;
 			case 'price_high_low':
-				$args['meta_key'] = 'price';
+				$args['meta_key'] = 'cprice';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'DESC';
+				$args['meta_query'][] = [
+					'key'     => 'cprice',
+					'value'   => '',
+					'compare' => '!=',
+					'type'    => 'NUMERIC',
+				];
 				break;
 			case 'guests_low_high':
 				$args['meta_key'] = 'guests';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'ASC';
+				$args['meta_type'] = 'NUMERIC';
 				break;
 			case 'guests_high_low':
 				$args['meta_key'] = 'guests';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'DESC';
+				$args['meta_type'] = 'NUMERIC';
 				break;
 			case 'bedroom_low_high':
 				$args['meta_key'] = 'bedroom';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'ASC';
+				$args['meta_type'] = 'NUMERIC';
 				break;
 			case 'bedroom_high_low':
 				$args['meta_key'] = 'bedroom';
 				$args['orderby'] = 'meta_value_num';
 				$args['order'] = 'DESC';
+				$args['meta_type'] = 'NUMERIC';
 				break;
 			default:
 				$args['orderby'] = 'date';
 				$args['order'] = 'DESC';
 		}
 	}
+
 	// sorting end
 	// sorting debug
 	error_log('Sort by: ' . ($_POST['sort_by'] ?? 'not set'));
@@ -745,7 +893,7 @@ function filter_collections_ajax() {
 			$bathroom   = get_field('bathroom');
             $tourist_license  = get_field('tourist_license');
 			$pleasures  = get_field('pleasures');
-			$price  = get_field('price');
+			$price  = get_field('cprice');
             ?>
 			
             <div class="collection-item">
@@ -753,24 +901,26 @@ function filter_collections_ajax() {
                     <a href="<?php echo esc_url($link); ?>"><?php echo $image; ?></a>
                 <?php endif; ?>
 
-                <div class="collection-destination">
+                 <div class="collection-destination">
                     <?php
                     if (!empty($destination)) {
                         $names = wp_list_pluck($destination, 'name');
                         echo implode(', ', $names);
-                    }
+                     }
                     ?>
                 </div>
 
                 <h3><a href="<?php echo esc_url($link); ?>"><?php echo esc_html($title); ?></a></h3>
-                <p><?php echo esc_html($excerpt); ?></p>
+                <p><?php// echo esc_html($excerpt); ?></p>
 
                 <div class="collection-infos">
 					<div class="collection-properties"><span>Guests</span> <span><?php echo esc_html($guests); ?></span></div>
                     <div class="collection-properties"><span>Rooms</span> <span><?php echo esc_html($bedroom); ?> Bedrooms, <?php echo esc_html($bathroom); ?> Bathrooms</span></div>
                     <div class="collection-properties"><span>Tourist License</span> <span><?php echo esc_html($tourist_license); ?></span></div>
 					<div class="collection-properties"><span>Pleasures</span> <span><?php echo esc_html($pleasures); ?></span></div>
-					<div class="collection-properties"><span>price from</span> <span>€ <?php echo esc_html($price); ?></span></div>
+					<div class="collection-properties no-line"><span>price from</span><span><?php echo $price ? '€ ' . esc_html($price) : '0'; ?></span></div>
+
+					<div class="collection-properties no-line double-buttons"><a href="<?php echo esc_url($link); ?>">Read More</a><a href="#">Book Now</a></div>
                 </div>
             </div>
 
