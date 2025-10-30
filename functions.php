@@ -200,6 +200,7 @@ function collection_custom_filter_loop_shortcode() {
 			line-height: 130%;
 			letter-spacing: .05em;
 			font-size: 20px;
+			background-color: transparent !important;
 		}
 		.acf-item-wrapper input::placeholder {
 			color: #000;
@@ -260,33 +261,35 @@ function collection_custom_filter_loop_shortcode() {
 			border: 1px solid #000;
 			text-align: center;
 			padding: 8px;
-			font-size: 18px;
-			color: #000 !important;
-			font-family: Romie, serif;
-			font-weight: 400 !important;
-			letter-spacing: .02em;
+			font-size: 20px;
+			font-weight: 500;
 			text-transform: uppercase;
+			line-height: 26px;
+			letter-spacing: 0.93px;
+			color: #000 !important;
+			font-family: "Romie Medium", Sans-serif;
 		}
 		.double-buttons a:first-child:hover {
-			color: #fff !important;
-			background-color: #000000;
+/* 			color: #fff !important;
+			background-color: #000000; */
 		}
 		.double-buttons a:last-child {
 			width: 50%;
 			border: 1px solid #000;
 			text-align: center;
 			padding: 8px;
-			font-size: 18px;
 			color: #fff !important;
 			background-color: #000000;
-			font-family: Romie, serif;
-			font-weight: 400 !important;
-			letter-spacing: .02em;
+			font-family: "Romie Medium", Sans-serif;
+			font-size: 20px;
+			font-weight: 500;
 			text-transform: uppercase;
+			line-height: 26px;
+			letter-spacing: 0.93px;
 		}
 		.double-buttons a:last-child:hover {
-			color: #000 !important;
-			background-color: transparent;
+/* 			color: #000 !important;
+			background-color: transparent; */
 		}
 		.collection-properties span {
 			flex: 1 0 50%;
@@ -299,7 +302,7 @@ function collection_custom_filter_loop_shortcode() {
 			font-weight: 300;
 			line-height: 130%;
 			letter-spacing: .05em;
-			font-size: 18px;
+			font-size: 20px;
 			border: 1px solid #000;
 			color: #000;
 			text-transform: uppercase;
@@ -383,7 +386,7 @@ function collection_custom_filter_loop_shortcode() {
 			display: none;
 		}
 		
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1350px) {
             .collection-wrapper {
                 flex-direction: column;
             }
@@ -444,28 +447,51 @@ function collection_custom_filter_loop_shortcode() {
 				<span>Filters</span>
 			</h3>
 				
-                <?php foreach ([
+                <?php
+				$is_types_archive = is_tax('collection-type');
+				$current_term = $is_types_archive ? get_queried_object() : null;
+				foreach ([
                     'destination' => 'Destinations',
                     'collection-type' => 'Types'
                 ] as $taxonomy => $label):
                     $terms = get_terms($taxonomy, ['hide_empty' => false]);
                     $slug = $taxonomy === 'collection-type' ? 'collection_type' : $taxonomy;
                 ?>
-                <details class="accordion" <?php echo ($taxonomy === 'destination') ? 'open' : ''; ?>>
-                    <summary>
-                        <span class="accordion-title"><?php echo $label; ?> <span class="selected-items <?php echo $slug; ?>-selected"></span></span>
-                        <img src="/wp-content/uploads/2025/05/dropdown.svg" class="accordion-icon" alt="Toggle" />
-                    </summary>
-                    <div class="accordion-content">
-                        <?php foreach ($terms as $term): ?>
-                            <label>
-							<!-- <span class="x-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" class="h-[10rem] w-auto"><path fill="currentColor" d="M6.632.464h.84V.62c-.768.912-2.136 2.592-2.976 3.612.9 1.056 2.436 2.952 3.06 3.612V8h-.9c-.9-1.272-1.764-2.4-2.652-3.42C3.224 5.516 1.94 7.076 1.28 8H.44v-.12c.744-.9 2.22-2.628 3.048-3.696C2.684 3.128 1.292 1.448.584.62V.464h.852c.828 1.164 1.728 2.388 2.58 3.432.636-.732 1.86-2.328 2.616-3.432"></path></svg></span> -->
-                                <?php echo esc_html($term->name); ?> <span class="filter-count"><?php echo $term->count; ?></span>
-								<input type="checkbox" name="<?php echo $slug; ?>[]" value="<?php echo esc_attr($term->slug); ?>">
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </details>
+
+				<details class="accordion" <?php echo ($taxonomy === 'destination' || ($taxonomy === 'collection-type' && $is_types_archive)) ? 'open' : ''; ?>>
+				  <summary>
+					<span class="accordion-title">
+					  <?php echo $label; ?>
+					  <span class="selected-items <?php echo $slug; ?>-selected">
+						<?php
+						// Prefill the “selected” chip on first load
+						if ($taxonomy === 'collection-type' && $current_term) {
+						  echo esc_html($current_term->name);
+						}
+						?>
+					  </span>
+					</span>
+					<img src="/wp-content/uploads/2025/05/dropdown.svg" class="accordion-icon" alt="Toggle" />
+				  </summary>
+
+				  <div class="accordion-content">
+					<?php foreach ($terms as $term): ?>
+					  <?php
+						$is_checked = ($taxonomy === 'collection-type' && $current_term && $current_term->slug === $term->slug);
+					  ?>
+					  <label class="<?php echo $is_checked ? 'selected' : ''; ?>">
+						<?php echo esc_html($term->name); ?> <span class="filter-count"><?php echo $term->count; ?></span>
+						<input
+						  type="checkbox"
+						  name="<?php echo $slug; ?>[]"
+						  value="<?php echo esc_attr($term->slug); ?>"
+						  <?php checked($is_checked); ?>
+						>
+					  </label>
+					<?php endforeach; ?>
+				  </div>
+				</details>
+
                 <?php endforeach; ?>
 
                 <div class="range-fields" style="margin-top:20px;">
@@ -496,29 +522,6 @@ function collection_custom_filter_loop_shortcode() {
 <script>
     jQuery(function($){
 		let page = 1;
-// 	   	function fetchCollections(reset = false, doClearAll = false) {
-// 			const data = $('#collection-filter-form').serializeArray();
-// 			data.push({ name: 'action', value: 'filter_collections_ajax' });
-// 			data.push({ name: 'page', value: page });
-
-// 			// Add sort_by value
-// 			const sortVal = $('#sort_by').val();
-// 			if (sortVal) {
-// 				data.push({ name: 'sort_by', value: sortVal });
-// 			}
-
-// 			if (doClearAll) {
-// 				data.push({ name: 'clear_all', value: '1' });
-// 			}
-
-// 			$.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response){
-// 				if (reset) $('#collection-results').html(response);
-// 				else $('#collection-results').append(response);
-
-// 				const maxPages = parseInt($('#collection-pagination').data('max-pages')) || 1;
-// 				$('#load-more').toggle(page < maxPages);
-// 			});
-// 		}
 
 		// added promise to check loading feature
 		function fetchCollections(reset = false, doClearAll = false) {
@@ -549,7 +552,12 @@ function collection_custom_filter_loop_shortcode() {
 			});
 		}
 
-		
+// Auto-check current taxonomy if on collection-type archive
+const currentTaxonomy = window.location.pathname.match(/collection-type\/([^/]+)/);
+if (currentTaxonomy && currentTaxonomy[1]) {
+	const termSlug = currentTaxonomy[1];
+	$(`input[name="collection_type[]"][value="${termSlug}"]`).prop('checked', true).closest('label').addClass('selected');
+}
 
 			$('#collection-filter-form').on('change', 'input, select', function() {
 				page = 1;
@@ -594,6 +602,39 @@ function collection_custom_filter_loop_shortcode() {
 				fetchCollections(true, true);
 			});
 
+// Auto-open Types accordion and check current term on /collection-type/{slug}/
+(function initTypesFromURL() {
+  const m = location.pathname.match(/\/collection-type\/([^/]+)\/?/);
+  if (!m) return;
+
+  const slug = decodeURIComponent(m[1]);
+  const $checkbox = $(`input[name="collection_type[]"][value="${slug}"]`);
+  if (!$checkbox.length) return;
+
+  // check + style
+  $checkbox.prop('checked', true).closest('label').addClass('selected');
+
+  // open the Types accordion
+  const $details = $checkbox.closest('details.accordion');
+  if ($details.length) $details.attr('open', true);
+
+  // update summary “chip” and selected state
+  const labelText = $checkbox.parent().contents().filter(function() {
+    return this.nodeType === 3; // text node
+  }).text().replace(/\(\d+\)/, '').trim();
+
+  const $summary = $details.children('summary');
+  $summary.addClass('term-selected');
+  $summary.find('.accordion-title').addClass('term-selected');
+  $('.collection_type-selected').text(labelText);
+
+  // make sure initial fetch uses this selection
+  // (only needed if your server-side check above isn't used)
+  // $('#collection-filter-form').trigger('change');  // or:
+  // page = 1; fetchCollections(true);
+})();
+
+		
 			fetchCollections(true);
 		});
 
